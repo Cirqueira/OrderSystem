@@ -1,0 +1,67 @@
+unit uPrincipal2;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, System.ImageList,
+  Vcl.ImgList, Vcl.Menus, Vcl.StdCtrls, Vcl.Buttons;
+
+type
+  TForm1 = class(TForm)
+    pnlTopo: TPanel;
+    btnFilial: TSpeedButton;
+    btnCliente: TSpeedButton;
+    btnFornecedor: TSpeedButton;
+    Bevel1: TBevel;
+    btnRepresentante: TSpeedButton;
+    Bevel2: TBevel;
+    btnEndereco: TSpeedButton;
+    btnCidade: TSpeedButton;
+    btnTelefone: TSpeedButton;
+    Bevel3: TBevel;
+    btnGrupoProduto: TSpeedButton;
+    btrnProduto: TSpeedButton;
+    btnFabricante: TSpeedButton;
+    pnlFundo: TPanel;
+    pnlBemvindo: TPanel;
+    Panel1: TPanel;
+    lblHora: TLabel;
+    lblddmmaaaa: TLabel;
+    MainMenu1: TMainMenu;
+    mnuCadastro: TMenuItem;
+    mnuFilial: TMenuItem;
+    N1: TMenuItem;
+    mnuAuxiliares: TMenuItem;
+    mnuEndereo: TMenuItem;
+    mnuCidade: TMenuItem;
+    mnuTelefone: TMenuItem;
+    N4: TMenuItem;
+    mnuClientes: TMenuItem;
+    mnuFornecedor: TMenuItem;
+    mnuRepresentante: TMenuItem;
+    mnuFabricante: TMenuItem;
+    N3: TMenuItem;
+    mnuProdutoAux: TMenuItem;
+    mnuGrupoProduto: TMenuItem;
+    mnuProduto: TMenuItem;
+    N2: TMenuItem;
+    mnuSair: TMenuItem;
+    mnuOperacional: TMenuItem;
+    mnuEntrada: TMenuItem;
+    ImageList1: TImageList;
+    Timer1: TTimer;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,43 @@
+unit uPrincipal2;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, System.ImageList,
+  Vcl.ImgList, Vcl.Menus, Vcl.StdCtrls, Vcl.Buttons;
+
+type
+  TfrmPrincipal2 = class(TForm)
+    pnlFundo: TPanel;
+    pnlBemvindo: TPanel;
+    Panel1: TPanel;
+    lblHora: TLabel;
+    lblddmmaaaa: TLabel;
+    MainMenu1: TMainMenu;
+    mnuProduto: TMenuItem;
+    mnuPedido: TMenuItem;
+    ImageList1: TImageList;
+    Timer1: TTimer;
+    procedure mnuPedidoClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPrincipal2: TfrmPrincipal2;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmPrincipal2.mnuPedidoClick(Sender: TObject);
+begin
+  FMain.Caption := CentralizaFormCaption(FMain.Caption, 385);
+
+  lblddmmaaaa.Caption := DataExtenso(Date);
+end;
+
+end.
