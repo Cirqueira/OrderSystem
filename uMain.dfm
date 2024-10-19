@@ -44,8 +44,6 @@ object FMain: TFMain
         Align = alRight
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 652
-        ExplicitTop = -15
         object lblHora: TLabel
           Left = 83
           Top = 23
@@ -93,6 +91,7 @@ object FMain: TFMain
     end
     object mnuRelatorio: TMenuItem
       Caption = 'Relat'#243'rio'
+      OnClick = mnuRelatorioClick
     end
   end
   object ImageList1: TImageList

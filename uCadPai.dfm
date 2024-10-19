@@ -27,8 +27,6 @@ object FCadPai: TFCadPai
         Text = 'Registros encontrados: 0'
         Width = 50
       end>
-    ExplicitTop = 518
-    ExplicitWidth = 980
   end
   object pnlGrid: TPanel
     Left = 0
@@ -37,7 +35,6 @@ object FCadPai: TFCadPai
     Height = 483
     Align = alLeft
     TabOrder = 1
-    ExplicitHeight = 475
     object dbgrdPrincipal: TDBGrid
       Left = 7
       Top = 13
@@ -67,8 +64,7 @@ object FCadPai: TFCadPai
     Height = 483
     Align = alClient
     TabOrder = 2
-    ExplicitWidth = 467
-    ExplicitHeight = 475
+    ExplicitTop = 45
   end
   object pnlBotoes: TPanel
     Left = 0
@@ -77,7 +73,6 @@ object FCadPai: TFCadPai
     Height = 43
     Align = alTop
     TabOrder = 3
-    ExplicitWidth = 980
     object btnRegAnterior: TSpeedButton
       Left = 713
       Top = 1

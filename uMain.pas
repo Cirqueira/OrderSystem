@@ -24,6 +24,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure mnuProdutoClick(Sender: TObject);
     procedure mnuPedidoClick(Sender: TObject);
+    procedure mnuRelatorioClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -35,7 +36,7 @@ var
 
 implementation
 
-uses uCadProduto, uPedido;
+uses uCadProduto, uPedido, uRelatorio;
 
 {$R *.dfm}
 
@@ -54,6 +55,11 @@ end;
 procedure TFMain.mnuProdutoClick(Sender: TObject);
 begin
   TFCadProduto.Execute;
+end;
+
+procedure TFMain.mnuRelatorioClick(Sender: TObject);
+begin
+  TFRelatorio.Execute;
 end;
 
 procedure TFMain.Timer1Timer(Sender: TObject);

@@ -3,12 +3,15 @@ inherited FCadProduto: TFCadProduto
   Caption = 'Cadastro de produtos'
   KeyPreview = True
   StyleElements = [seFont, seClient, seBorder]
+  ExplicitLeft = -121
   TextHeight = 15
   inherited pnlGrid: TPanel
     Width = 593
     StyleElements = [seFont, seClient, seBorder]
     ExplicitWidth = 593
     inherited dbgrdPrincipal: TDBGrid
+      Left = 9
+      Top = 6
       Width = 578
       Columns = <
         item
@@ -42,7 +45,7 @@ inherited FCadProduto: TFCadProduto
     Width = 389
     StyleElements = [seFont, seClient, seBorder]
     ExplicitLeft = 593
-    ExplicitWidth = 387
+    ExplicitWidth = 389
     object lblCodigoProduto: TLabel
       Left = 20
       Top = 11
@@ -207,7 +210,8 @@ inherited FCadProduto: TFCadProduto
       ExplicitTop = 10
     end
     inherited btnRegSalvar: TSpeedButton
-      ExplicitTop = 1
+      ExplicitLeft = 853
+      ExplicitHeight = 41
     end
     inherited btnRegApagar: TSpeedButton
       ExplicitTop = 1
@@ -224,7 +228,7 @@ inherited FCadProduto: TFCadProduto
     inherited lblNomeForm: TLabel
       Caption = 'Produtos'
       StyleElements = [seFont, seClient, seBorder]
-      ExplicitWidth = 104
+      ExplicitWidth = 706
     end
   end
   inherited dsPrincipal: TDataSource
