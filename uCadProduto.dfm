@@ -1,19 +1,10 @@
 inherited FCadProduto: TFCadProduto
   BorderStyle = bsSingle
-  Caption = 'Cadastro de Produto'
+  Caption = 'Cadastro de produtos'
   KeyPreview = True
   StyleElements = [seFont, seClient, seBorder]
   TextHeight = 15
-  inherited pnlCabecalho: TPanel
-    StyleElements = [seFont, seClient, seBorder]
-    inherited lblNomeForm: TLabel
-      Width = 92
-      Caption = 'Produto'
-      StyleElements = [seFont, seClient, seBorder]
-      ExplicitWidth = 92
-    end
-  end
-  inherited pnlGrade: TPanel
+  inherited pnlGrid: TPanel
     Width = 593
     StyleElements = [seFont, seClient, seBorder]
     ExplicitWidth = 593
@@ -51,10 +42,10 @@ inherited FCadProduto: TFCadProduto
     Width = 389
     StyleElements = [seFont, seClient, seBorder]
     ExplicitLeft = 593
-    ExplicitWidth = 389
-    object Label1: TLabel
+    ExplicitWidth = 387
+    object lblCodigoProduto: TLabel
       Left = 20
-      Top = 12
+      Top = 11
       Width = 33
       Height = 13
       Margins.Left = 4
@@ -69,7 +60,7 @@ inherited FCadProduto: TFCadProduto
       Font.Style = []
       ParentFont = False
     end
-    object Label2: TLabel
+    object lblNomeProduto: TLabel
       Left = 20
       Top = 84
       Width = 83
@@ -86,7 +77,7 @@ inherited FCadProduto: TFCadProduto
       Font.Style = []
       ParentFont = False
     end
-    object Label6: TLabel
+    object lblPrecoVenda: TLabel
       Left = 20
       Top = 224
       Width = 75
@@ -103,7 +94,7 @@ inherited FCadProduto: TFCadProduto
       Font.Style = []
       ParentFont = False
     end
-    object Label3: TLabel
+    object lblDescricaoProduto: TLabel
       Left = 20
       Top = 158
       Width = 102
@@ -120,7 +111,7 @@ inherited FCadProduto: TFCadProduto
       Font.Style = []
       ParentFont = False
     end
-    object edtCodProd: TDBEdit
+    object edtCodigoProduto: TDBEdit
       Left = 20
       Top = 32
       Width = 70
@@ -158,6 +149,7 @@ inherited FCadProduto: TFCadProduto
       ParentShowHint = False
       ShowHint = True
       TabOrder = 1
+      OnKeyPress = edtNomeProdutoKeyPress
     end
     object edtDescricaoProduto: TDBEdit
       Left = 20
@@ -175,6 +167,7 @@ inherited FCadProduto: TFCadProduto
       ParentShowHint = False
       ShowHint = True
       TabOrder = 2
+      OnKeyPress = edtDescricaoProdutoKeyPress
     end
     object edtPrecoVenda: TDBEdit
       Left = 20
@@ -192,44 +185,46 @@ inherited FCadProduto: TFCadProduto
       ParentShowHint = False
       ShowHint = True
       TabOrder = 3
+      OnKeyPress = edtPrecoVendaKeyPress
     end
   end
-  inherited pnlBusca: TPanel
+  inherited pnlBotoes: TPanel
     StyleElements = [seFont, seClient, seBorder]
-    inherited lblPesquisa: TLabel
-      StyleElements = [seFont, seClient, seBorder]
+    inherited btnRegAnterior: TSpeedButton
+      ExplicitLeft = 724
+      ExplicitTop = 10
+    end
+    inherited btnRegProximo: TSpeedButton
+      ExplicitTop = 1
     end
     inherited btnRegNovo: TSpeedButton
-      Left = 810
-      Top = 12
+      Left = 779
       ExplicitLeft = 810
-      ExplicitTop = 12
+      ExplicitTop = 10
     end
-    inherited edtPesquisar: TEdit
+    inherited btnRegEditar: TSpeedButton
+      ExplicitLeft = 835
+      ExplicitTop = 10
+    end
+    inherited btnRegSalvar: TSpeedButton
+      ExplicitTop = 1
+    end
+    inherited btnRegApagar: TSpeedButton
+      ExplicitTop = 1
+    end
+    inherited btnFechar: TSpeedButton
+      ExplicitLeft = 952
+      ExplicitTop = -4
+      ExplicitHeight = 41
+    end
+    inherited bevelNavegar: TBevel
+      Left = 812
+      ExplicitLeft = 812
+    end
+    inherited lblNomeForm: TLabel
+      Caption = 'Produtos'
       StyleElements = [seFont, seClient, seBorder]
-    end
-    object btnSelecionarProduto: TBitBtn
-      Left = 480
-      Top = 15
-      Width = 75
-      Height = 25
-      Hint = 'Seleciona o Produto'
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      Caption = 'Selecionar'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      TabOrder = 2
-      Visible = False
-      OnClick = btnSelecionarProdutoClick
+      ExplicitWidth = 104
     end
   end
   inherited dsPrincipal: TDataSource

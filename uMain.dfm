@@ -3,8 +3,8 @@ object FMain: TFMain
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Order System'
-  ClientHeight = 549
-  ClientWidth = 1009
+  ClientHeight = 541
+  ClientWidth = 1007
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,17 +18,15 @@ object FMain: TFMain
   object pnlFundo: TPanel
     Left = 0
     Top = 0
-    Width = 1009
-    Height = 549
+    Width = 1007
+    Height = 541
     Align = alClient
     BevelOuter = bvLowered
     TabOrder = 0
-    ExplicitWidth = 1007
-    ExplicitHeight = 541
     object pnlBemvindo: TPanel
       Left = 1
       Top = 1
-      Width = 1007
+      Width = 1005
       Height = 56
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
@@ -38,16 +36,16 @@ object FMain: TFMain
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitWidth = 1005
       object Panel1: TPanel
-        Left = 653
+        Left = 651
         Top = 1
         Width = 353
         Height = 54
         Align = alRight
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 651
+        ExplicitLeft = 652
+        ExplicitTop = -15
         object lblHora: TLabel
           Left = 83
           Top = 23
@@ -91,6 +89,7 @@ object FMain: TFMain
     end
     object mnuPedido: TMenuItem
       Caption = 'Pedido'
+      OnClick = mnuPedidoClick
     end
     object mnuRelatorio: TMenuItem
       Caption = 'Relat'#243'rio'

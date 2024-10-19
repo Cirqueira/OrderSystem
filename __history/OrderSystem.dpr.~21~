@@ -1,0 +1,24 @@
+program OrderSystem;
+
+uses
+  Vcl.Forms,
+  uMain in 'uMain.pas' {FMain},
+  uDataModule in 'uDataModule.pas' {DM: TDataModule},
+  Utils in 'Utils.pas',
+  uCadPai in 'uCadPai.pas' {FCadPai},
+  uCadProduto in 'uCadProduto.pas' {FCadProduto},
+  {$R}
+  {$R}
+  {$R}
+  UtilMensagens in 'UtilMensagens.pas' {$R *.res},
+  uPedido in 'uPedido.pas' {FPedido};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TFMain, FMain);
+  Application.CreateForm(TDM, DM);
+  Application.CreateForm(TFPedido, FPedido);
+  Application.Run;
+end.

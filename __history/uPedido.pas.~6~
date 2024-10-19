@@ -1,0 +1,25 @@
+unit uPedido;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uCadPai, Data.DB, Vcl.StdCtrls,
+  Vcl.ExtCtrls, Vcl.Buttons, Vcl.Grids, Vcl.DBGrids, Vcl.ComCtrls;
+
+type
+  TFPedido = class(TFCadPai)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FPedido: TFPedido;
+
+implementation
+
+{$R *.dfm}
+
+end.

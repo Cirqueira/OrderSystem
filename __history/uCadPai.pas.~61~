@@ -1,0 +1,426 @@
+unit uCadPai;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.Buttons,
+  Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.ComCtrls, UTiposClass, UBaseIntf;
+
+type
+  TFCadPai = class(TForm)
+    StatusBar: TStatusBar;
+    pnlGrade: TPanel;
+    dbgrdPrincipal: TDBGrid;
+    pnlDados: TPanel;
+    pnlBusca: TPanel;
+    btnRegAnterior: TSpeedButton;
+    btnRegProximo: TSpeedButton;
+    btnRegNovo: TSpeedButton;
+    btnRegEditar: TSpeedButton;
+    btnRegSalvar: TSpeedButton;
+    btnRegDesfazer: TSpeedButton;
+    btnRegApagar: TSpeedButton;
+    dsPrincipal: TDataSource;
+    btnFechar: TSpeedButton;
+    bevelNavegar: TBevel;
+    bevelSair: TBevel;
+    lblNomeForm: TLabel;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure btnRegAnteriorClick(Sender: TObject);
+    procedure btnRegProximoClick(Sender: TObject);
+    procedure btnRegNovoClick(Sender: TObject);
+    procedure btnRegEditarClick(Sender: TObject);
+    procedure btnRegSalvarClick(Sender: TObject);
+    procedure btnRegDesfazerClick(Sender: TObject);
+    procedure btnRegApagarClick(Sender: TObject);
+    procedure btnFecharClick(Sender: TObject);
+  private
+    { Private declarations }
+    FStatus: TStatus;
+    procedure SetStatus(Value: TStatus);
+    function  GetDataSetInstanciado: Boolean;
+
+    procedure RefreshDataset;
+    function  GetQtdeRegistros: Integer;
+    procedure SetQtdeRegistros;
+    procedure ConfirmaSalvar;
+
+    procedure ChecaPosicaoDataset;
+    procedure OnAfterScroll(DataSet: TDataSet);
+    procedure OnBeforeScroll(DataSet: TDataSet);
+
+    procedure RegistroAnterior;
+    procedure ProximoRegistro;
+    procedure NovoRegistro;
+    procedure EditarRegistro;
+    procedure SalvarRegistro;
+    procedure CancelarAlteracao;
+    procedure ApagarRegistro;
+
+    procedure HabilitaNoInicializar;
+    procedure HabilitaNoInserir;
+    procedure HabilitaNoAlterar;
+    procedure HabilitaNoSalvar;
+    procedure HabilitaNoCancelar;
+    procedure HabilitaNoExcluir;
+    procedure HabilitaNoPesquisar;
+  public
+    { Public declarations }
+  protected
+    function  GetStatus: TStatus;
+    procedure MapDataSetToFields(oDataSet: TDataSet); virtual; abstract;
+  end;
+
+var
+  FCadPai: TFCadPai;
+
+implementation
+
+uses Mask;
+
+{$R *.dfm}
+
+procedure TFCadPai.FormCreate(Sender: TObject);
+begin
+  SetStatus(stNavegando);
+
+  HabilitaNoInicializar;
+  SetQtdeRegistros;
+end;
+
+procedure TFCadPai.SetStatus(Value: TStatus);
+begin
+  FStatus := Value;
+end;
+
+procedure TFCadPai.btnRegNovoClick(Sender: TObject);
+begin
+  NovoRegistro;
+end;
+
+procedure TFCadPai.btnRegSalvarClick(Sender: TObject);
+begin
+  SalvarRegistro;
+end;
+
+procedure TFCadPai.SalvarRegistro;
+var
+  stStatusAnterior: TStatus;
+begin
+  HabilitaNoSalvar;
+
+  stStatusAnterior := GetStatus;
+  SetStatus(stNavegando);
+
+  if (GetDataSetInstanciado) then
+  begin
+    RefreshDataset;
+
+    if (stStatusAnterior = stInserindo) then
+      dsPrincipal.DataSet.Last;
+  end;
+
+  SetQtdeRegistros;
+end;
+
+procedure TFCadPai.btnRegDesfazerClick(Sender: TObject);
+begin
+  CancelarAlteracao;
+end;
+
+procedure TFCadPai.btnRegEditarClick(Sender: TObject);
+begin
+  EditarRegistro;
+end;
+
+function TFCadPai.GetDataSetInstanciado: Boolean;
+begin
+  Result := Assigned(dsPrincipal.DataSet);
+end;
+
+
+procedure TFCadPai.btnFecharClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFCadPai.btnRegAnteriorClick(Sender: TObject);
+begin
+  RegistroAnterior;
+
+  SetQtdeRegistros;
+end;
+
+procedure TFCadPai.btnRegApagarClick(Sender: TObject);
+begin
+  ApagarRegistro;
+  SetStatus(stNavegando);
+  SetQtdeRegistros;
+end;
+
+procedure TFCadPai.btnRegProximoClick(Sender: TObject);
+begin
+  ProximoRegistro;
+
+  SetQtdeRegistros;
+end;
+
+procedure TFCadPai.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if (dsPrincipal.State in [dsInsert, dsEdit]) then
+    ConfirmaSalvar
+  else if (GetQtdeRegistros > 0) then
+  begin
+    if MessageDlg('Deseja realmente fechar esta tela ?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+      Abort;
+  end;
+end;
+
+procedure TFCadPai.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (key = vk_Escape) then
+    Close;
+end;
+
+procedure TFCadPai.RefreshDataset;
+begin
+  if (GetDataSetInstanciado) then
+    try
+      Screen.Cursor := crHourGlass;
+      try
+        dsPrincipal.DataSet.Refresh;
+      except
+        on e: Exception do
+          raise Exception.Create('Houve uma falha ao tentar recuperar os dados da tabela.' + sLineBreak +
+                                 'Mensagem original: ' + e.Message);
+      end;
+    finally
+      Screen.Cursor := crDefault;
+    end;
+end;
+
+function TFCadPai.GetQtdeRegistros: Integer;
+begin
+  if (GetDataSetInstanciado) then
+    Result := dsPrincipal.DataSet.RecordCount
+  else
+    Result := 0;
+end;
+
+procedure TFCadPai.SetQtdeRegistros;
+begin
+  StatusBar.Panels[0].Text := 'Registros encontrados: ' + IntToStr(GetQtdeRegistros);
+end;
+
+procedure TFCadPai.ConfirmaSalvar;
+begin
+  if dsPrincipal.State in [dsEdit, dsInsert] then
+    case MessageBox(Handle, 'Deseja salvar as alterações ?', 'Atenção', MB_ICONQUESTION + MB_YESNOCANCEL) of
+      ID_YES   : btnRegSalvar.Click;
+      ID_NO    : btnRegDesfazer.Click;
+      ID_CANCEL: Abort;
+    end;
+end;
+
+procedure TFCadPai.ChecaPosicaoDataset;
+begin
+  if (GetDataSetInstanciado) and (dsPrincipal.DataSet.RecNo > 0) then
+  begin
+    if (dsPrincipal.DataSet.RecNo = 1) then
+    begin
+      btnRegAnterior.Enabled := False;
+      btnRegProximo.Enabled  := False;
+    end
+    else if (dsPrincipal.DataSet.RecNo = dsPrincipal.DataSet.RecordCount) then
+    begin
+      btnRegAnterior.Enabled := True;
+      btnRegProximo.Enabled  := False;
+    end
+    else
+    begin
+      btnRegAnterior.Enabled := (dsPrincipal.DataSet.RecordCount > 0);
+      btnRegProximo.Enabled  := btnRegAnterior.Enabled;
+    end;
+  end
+  else
+  begin
+      btnRegAnterior.Enabled := False;
+      btnRegProximo.Enabled  := False;
+  end;
+end;
+
+procedure TFCadPai.OnAfterScroll(DataSet: TDataSet);
+begin
+  ChecaPosicaoDataset;
+  MapDataSetToFields(dsPrincipal.DataSet);
+end;
+
+procedure TFCadPai.OnBeforeScroll(DataSet: TDataSet);
+begin
+  ConfirmaSalvar;
+end;
+
+procedure TFCadPai.RegistroAnterior;
+begin
+  dsPrincipal.DataSet.Prior;
+  btnRegAnterior.Enabled := (dsPrincipal.DataSet.RecNo > 1);
+  btnRegProximo.Enabled  := True;
+end;
+
+procedure TFCadPai.ProximoRegistro;
+begin
+  dsPrincipal.DataSet.Next;
+  btnRegProximo.Enabled  := (dsPrincipal.DataSet.RecNo < dsPrincipal.DataSet.RecordCount);
+  btnRegAnterior.Enabled := True;
+end;
+
+procedure TFCadPai.NovoRegistro;
+begin
+  HabilitaNoInserir;
+  SetStatus(stInserindo);
+end;
+
+procedure TFCadPai.EditarRegistro;
+begin
+if GetDataSetInstanciado then
+  begin
+    dsPrincipal.DataSet.Edit;
+
+    HabilitaNoAlterar;
+    SetStatus(stEditando);
+  end;
+end;
+
+procedure TFCadPai.CancelarAlteracao;
+begin
+  HabilitaNoCancelar;
+  SetQtdeRegistros;
+end;
+
+procedure TFCadPai.ApagarRegistro;
+var
+  iRecNo: Integer;
+begin
+  if (GetDataSetInstanciado) then
+  begin
+    iRecNo := dsPrincipal.DataSet.RecNo;
+
+    RefreshDataset;
+
+    if (iRecNo > dsPrincipal.DataSet.RecordCount) then
+      dsPrincipal.DataSet.RecNo := dsPrincipal.DataSet.RecordCount
+    else
+      dsPrincipal.DataSet.RecNo := iRecNo;
+  end;
+
+  HabilitaNoExcluir;
+end;
+
+procedure TFCadPai.HabilitaNoInicializar;
+begin
+  btnRegAnterior.Enabled := False;
+  btnRegProximo.Enabled  := True;
+  btnRegEditar.Enabled   := True;
+  btnRegSalvar.Enabled   := False;
+  btnRegDesfazer.Enabled := False;
+  btnRegApagar.Enabled   := True;
+end;
+
+procedure TFCadPai.HabilitaNoInserir;
+begin
+  btnRegAnterior.Enabled := False;
+  btnRegProximo.Enabled  := False;
+  btnRegNovo.Enabled     := False;
+  btnRegEditar.Enabled   := False;
+  btnRegApagar.Enabled   := False;
+
+  btnRegSalvar.Enabled   := True;
+  btnRegDesfazer.Enabled := True;
+end;
+
+procedure TFCadPai.HabilitaNoAlterar;
+begin
+  btnRegAnterior.Enabled := False;
+  btnRegProximo.Enabled  := False;
+  btnRegNovo.Enabled     := False;
+  btnRegEditar.Enabled   := False;
+  btnRegApagar.Enabled   := False;
+
+  btnRegSalvar.Enabled   := True;
+  btnRegDesfazer.Enabled := True;
+end;
+
+procedure TFCadPai.HabilitaNoSalvar;
+begin
+  btnRegSalvar.Enabled   := False;
+  btnRegDesfazer.Enabled := False;
+
+  ChecaPosicaoDataset;
+
+  btnRegNovo.Enabled     := True;
+  btnRegEditar.Enabled   := True;
+  btnRegApagar.Enabled   := True;
+end;
+
+procedure TFCadPai.HabilitaNoCancelar;
+begin
+  if (GetDataSetInstanciado) then
+  begin
+    btnRegSalvar.Enabled   := False;
+    btnRegDesfazer.Enabled := False;
+    btnRegApagar.Enabled   := False;
+
+    ChecaPosicaoDataset;
+
+    btnRegNovo.Enabled     := True;
+    btnRegEditar.Enabled   := True;
+    btnRegApagar.Enabled   := True;
+  end
+  else
+  begin
+    btnRegAnterior.Enabled := False;
+    btnRegProximo.Enabled  := False;
+    btnRegEditar.Enabled   := False;
+    btnRegSalvar.Enabled   := False;
+    btnRegDesfazer.Enabled := False;
+    btnRegApagar.Enabled   := False;
+
+    btnRegNovo.Enabled     := True;
+  end;
+end;
+
+procedure TFCadPai.HabilitaNoExcluir;
+begin
+  ChecaPosicaoDataset;
+  HabilitaNoPesquisar;
+end;
+
+procedure TFCadPai.HabilitaNoPesquisar;
+begin
+  btnRegAnterior.Enabled := True;
+  btnRegProximo.Enabled  := True;
+
+  if (GetQtdeRegistros = 0) then
+  begin
+    btnRegSalvar.Enabled   := False;
+    btnRegDesfazer.Enabled := False;
+    btnRegApagar.Enabled   := False;
+  end
+  else
+  begin
+    btnRegNovo.Enabled   := True;
+    btnRegEditar.Enabled := True;
+    btnRegApagar.Enabled := True;
+  end;
+end;
+
+function TFCadPai.GetStatus: TStatus;
+begin
+  Result := FStatus;
+end;
+
+end.

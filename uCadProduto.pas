@@ -4,22 +4,20 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uCadPai, Data.DB, Vcl.StdCtrls,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls,
   Vcl.Buttons, Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.ComCtrls, Vcl.Mask,
-  Vcl.DBCtrls;
+  Vcl.DBCtrls, uCadPai;
 
 type
   TFCadProduto = class(TFCadPai)
-    btnSelecionarProduto: TBitBtn;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label6: TLabel;
-    Label3: TLabel;
-    edtCodProd: TDBEdit;
+    lblCodigoProduto: TLabel;
+    lblNomeProduto: TLabel;
+    lblPrecoVenda: TLabel;
+    lblDescricaoProduto: TLabel;
+    edtCodigoProduto: TDBEdit;
     edtNomeProduto: TDBEdit;
     edtDescricaoProduto: TDBEdit;
     edtPrecoVenda: TDBEdit;
-    procedure btnSelecionarProdutoClick(Sender: TObject);
     procedure btnRegApagarClick(Sender: TObject);
     procedure btnRegDesfazerClick(Sender: TObject);
     procedure btnRegSalvarClick(Sender: TObject);
@@ -35,7 +33,7 @@ type
     { Public declarations }
     class procedure Execute;
   protected
-    function ValidarCampos: Boolean; override;
+    function ValidarCampos: Boolean;
   end;
 
 var
@@ -54,7 +52,7 @@ begin
   try
     try
       oForm := TFCadProduto.Create(nil);
-      oForm.edtCodProd.ReadOnly           := True;
+      oForm.edtCodigoProduto.ReadOnly     := True;
       oForm.edtNomeProduto.ReadOnly       := True;
       oForm.edtDescricaoProduto.ReadOnly  := True;
       oForm.edtPrecoVenda.ReadOnly        := True;
@@ -101,20 +99,15 @@ end;
 
 procedure TFCadProduto.btnRegApagarClick(Sender: TObject);
 begin
-  // Confirmação do usuário para apagar o registro
   if (MsgSimNao('Deseja realmente excluir este registro?')) then
   begin
     try
-      // Verifica se há um registro ativo
       if not dsPrincipal.DataSet.IsEmpty then
       begin
-        // Apagar o registro atual
         dsPrincipal.DataSet.Delete;
 
-        // Mensagem de sucesso
         msgInformacao('Produto excluído com sucesso.');
 
-        // Atualizar o dataset ou realizar qualquer outra ação necessária
         dsPrincipal.DataSet.Refresh;
       end
       else
@@ -122,10 +115,10 @@ begin
         msgAlerta('Nenhum registro selecionado para exclusão.');
       end;
 
+      inherited;
     except
       on E: Exception do
       begin
-        // Captura e exibe a mensagem de erro
         raise Exception.Create('Houve uma falha ao excluir o registro.' + sLineBreak +
                                'Mensagem original: ' + E.Message);
       end;
@@ -136,27 +129,21 @@ end;
 procedure TFCadProduto.btnRegDesfazerClick(Sender: TObject);
 begin
   try
-    // Verifica se o dataset está em modo de edição ou inserção
     if dsPrincipal.DataSet.State in [dsEdit, dsInsert] then
     begin
-      // Desfaz as alterações
       dsPrincipal.DataSet.Cancel;
 
-      // Mensagem de confirmação para o usuário
       msgInformacao('Alterações desfeitas com sucesso.');
 
-      // Voltar os campos para modo somente leitura
       edtNomeProduto.ReadOnly       := True;
       edtDescricaoProduto.ReadOnly  := True;
       edtPrecoVenda.ReadOnly        := True;
     end;
 
-    // Chamar o método herdado para comportamentos adicionais
     inherited;
   except
     on E: Exception do
     begin
-      // Capturar e exibir qualquer erro que ocorrer
       raise Exception.Create('Houve uma falha ao desfazer as alterações.' + sLineBreak +
                              'Mensagem original: ' + E.Message);
     end;
@@ -167,47 +154,38 @@ procedure TFCadProduto.btnRegEditarClick(Sender: TObject);
 begin
   inherited;
 
-  // Habilitar os campos para edição
   edtNomeProduto.ReadOnly       := False;
   edtDescricaoProduto.ReadOnly  := False;
   edtPrecoVenda.ReadOnly        := False;
 
-  // Colocar o foco no primeiro campo editável
   edtNomeProduto.SetFocus;
 
-  // Verifica se o dataset está em modo de visualização
   if dsPrincipal.DataSet.State = dsBrowse then
   begin
-    // Coloca o dataset em modo de edição
     dsPrincipal.DataSet.Edit;
   end;
 end;
 
 procedure TFCadProduto.btnRegNovoClick(Sender: TObject);
 begin
-  // Iniciar um novo registro no dataset
-  if dsPrincipal.DataSet <> nil then
-  begin
-    dsPrincipal.DataSet.Append; // Coloca o dataset em modo de inserção
-  end;
-
-  // Liberar os campos para edição
   edtNomeProduto.ReadOnly       := False;
   edtDescricaoProduto.ReadOnly  := False;
   edtPrecoVenda.ReadOnly        := False;
 
-  // Limpar os campos (opcional, o método Append já faz isso para campos ligados ao dataset)
-  edtCodProd.Text := '';
-  edtNomeProduto.Text := '';
+  edtCodigoProduto.Text    := '';
+  edtNomeProduto.Text      := '';
   edtDescricaoProduto.Text := '';
-  edtPrecoVenda.Text := '';
+  edtPrecoVenda.Text       := '';
 
-  edtCodProd.Text := GerarNovoCodigo();
-
-  // Focar no primeiro campo
   edtNomeProduto.SetFocus;
 
-  inherited; // Chama o comportamento herdado, se necessário
+  inherited;
+
+  if dsPrincipal.DataSet <> nil then
+  begin
+    dsPrincipal.DataSet.Append;
+  end;
+  edtCodigoProduto.Text := GerarNovoCodigo();
 end;
 
 procedure TFCadProduto.btnRegSalvarClick(Sender: TObject);
@@ -215,27 +193,21 @@ begin
   if ValidarCampos then
   begin
     try
-      // Verifica se o dataset está em modo de edição ou inserção
       if dsPrincipal.DataSet.State in [dsEdit, dsInsert] then
       begin
-        // Salvar os dados no banco
         dsPrincipal.DataSet.Post;
 
-        // Mensagem de sucesso
         msgInformacao('Produto salvo com sucesso.');
 
-        // Voltar os campos para modo somente leitura
         edtNomeProduto.ReadOnly       := True;
         edtDescricaoProduto.ReadOnly  := True;
         edtPrecoVenda.ReadOnly        := True;
       end;
 
-      // Chamar o método herdado para comportamentos adicionais
       inherited;
     except
       on E: Exception do
       begin
-        // Capturar e exibir qualquer erro que ocorrer
         raise Exception.Create('Houve uma falha ao salvar o registro.' + sLineBreak +
                                'Mensagem original: ' + E.Message);
       end;
@@ -247,42 +219,45 @@ function TFCadProduto.GerarNovoCodigo: string;
 var
   codNovo: Integer;
 begin
-  // Supondo que o FDQueryConsultas já esteja configurado e conectado ao banco de dados
-  DM.FDQueryConsultas.SQL.Text := 'SELECT MAX(cod_product) AS CodMax FROM tab_item'; // Altere 'Produtos' para o nome da sua tabela
+  DM.FDQueryConsultas.SQL.Text := 'SELECT MAX(cod_product) AS CodMax FROM tab_item';
   DM.FDQueryConsultas.Open;
 
-  // Verifica se existe algum código e obtém o valor máximo
   if not DM.FDQueryConsultas.FieldByName('CodMax').IsNull then
     codNovo := DM.FDQueryConsultas.FieldByName('CodMax').AsInteger + 1
   else
-    codNovo := 1; // Se não há códigos, inicia com 1
+    codNovo := 1;
 
   Result := IntToStr(codNovo);
-end;
-
-procedure TFCadProduto.btnSelecionarProdutoClick(Sender: TObject);
-begin
-//  FProdutoID  := dsPrincipal.DataSet.FieldByName('filial_id').AsInteger;
-//  ModalResult := mrOk;
 end;
 
 procedure TFCadProduto.edtDescricaoProdutoKeyPress(Sender: TObject;
   var Key: Char);
 begin
-  if not (Key In ['0'..'9', #8]) then
-    Key := #0;
+  if (key = #13) then
+  begin
+    SelectNext(Sender as TWinControl, True, True);
+  end;
 end;
 
 procedure TFCadProduto.edtNomeProdutoKeyPress(Sender: TObject; var Key: Char);
 begin
-  if not (Key In ['0'..'9', #8]) then
-    Key := #0;
+  if (key = #13) then
+  begin
+    SelectNext(Sender as TWinControl, True, True);
+  end;
+  
 end;
 
 procedure TFCadProduto.edtPrecoVendaKeyPress(Sender: TObject; var Key: Char);
 begin
-  if not (Key In ['0'..'9', ',', #8]) then
-    Key := #0;
+  if not (Key In ['0'..'9', ',']) then
+  begin
+    if (key = #13) then
+    begin
+      Key := #0;
+      btnRegSalvarClick(Sender);
+    end;  
+  end;  
 end;
 
 end.

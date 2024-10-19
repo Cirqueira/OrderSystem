@@ -2,13 +2,13 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2024/10/16 23:17:22.000.314,=C:\Users\leona\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2024/10/16 23:18:44.000.037,C:\Users\leona\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\uMain.pas</Transaction>
-    <Transaction>2024/10/16 23:18:44.000.037,C:\Users\leona\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\uMain.dfm</Transaction>
-    <Transaction>2024/10/16 23:18:48.000.958,C:\Users\leona\OneDrive\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\OrderSystem.dproj</Transaction>
+    <Transaction>2024/10/16 23:18:44.000.037,C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\uMain.pas=C:\Users\leona\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2024/10/16 23:18:44.000.037,C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\uMain.dfm=C:\Users\leona\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2024/10/16 23:18:48.000.958,C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\OrderSystem.dproj=C:\Users\leona\OneDrive\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
     <Transaction>2024/10/16 23:25:25.000.173,=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\Utils.pas</Transaction>
     <Transaction>2024/10/17 00:09:58.000.700,=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\Unit1.pas</Transaction>
-    <Transaction>2024/10/17 00:18:22.000.360,C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\Unit1.pas=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\uCadPai.pas</Transaction>
-    <Transaction>2024/10/17 00:18:22.000.360,C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\Unit1.dfm=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\uCadPai.dfm</Transaction>
+    <Transaction>2024/10/17 00:18:22.000.360,C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\uCadPai.dfm=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\Unit1.dfm</Transaction>
+    <Transaction>2024/10/17 00:18:22.000.360,C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\uCadPai.pas=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\Unit1.pas</Transaction>
     <Transaction>2024/10/17 00:41:13.000.858,=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\Unit1.pas</Transaction>
     <Transaction>2024/10/17 00:45:45.000.880,=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\Unit1.pas</Transaction>
     <Transaction>2024/10/17 18:28:15.000.463,=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\uCadProduto.pas</Transaction>
@@ -18,7 +18,15 @@
     <Transaction>2024/10/17 18:54:01.000.827,=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\uDataModule.pas</Transaction>
     <Transaction>2024/10/17 19:21:29.000.653,=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\UtilMensagens.pas</Transaction>
     <Transaction>2024/10/17 19:46:40.000.867,=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\Unit1.pas</Transaction>
-    <Transaction>2024/10/17 19:47:11.000.434,C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\UProdutoIntf.pas=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\Unit1.pas</Transaction>
+    <Transaction>2024/10/17 19:47:11.000.434,C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\Unit1.pas=C:\Users\leona\OneDrive\Documents\Projeto Minerva\OrderSystem\UProdutoIntf.pas</Transaction>
+    <Transaction>2024/10/19 13:55:03.000.829,=C:\Projetos\OrderSystem\uCadProduto.pas</Transaction>
+    <Transaction>2024/10/19 15:13:00.000.713,=C:\Projetos\OrderSystem\Unit1.pas</Transaction>
+    <Transaction>2024/10/19 15:13:59.000.571,C:\Projetos\OrderSystem\Unit1.dfm=C:\Projetos\OrderSystem\uPedido.dfm</Transaction>
+    <Transaction>2024/10/19 15:13:59.000.571,C:\Projetos\OrderSystem\Unit1.pas=C:\Projetos\OrderSystem\uPedido.pas</Transaction>
+    <Transaction>2024/10/19 15:40:50.000.259,C:\Projetos\OrderSystem\uPedido.pas=</Transaction>
+    <Transaction>2024/10/19 15:46:42.249,=C:\Projetos\OrderSystem\Unit1.pas</Transaction>
+    <Transaction>2024/10/19 15:49:08.785,C:\Projetos\OrderSystem\uPedido.dfm=C:\Projetos\OrderSystem\Unit1.dfm</Transaction>
+    <Transaction>2024/10/19 15:49:08.785,C:\Projetos\OrderSystem\uPedido.pas=C:\Projetos\OrderSystem\Unit1.pas</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="uCadPai.pas"/>
@@ -29,5 +37,9 @@
     <File Path="uDataModule.pas"/>
     <File Path="uDataModule.dfm"/>
     <File Path="UtilMensagens.pas"/>
+    <File Path="uCadProduto.pas"/>
+    <File Path="uCadProduto.dfm"/>
+    <File Path="uPedido.pas"/>
+    <File Path="uPedido.dfm"/>
   </ProjectSortOrder>
 </BorlandProject>

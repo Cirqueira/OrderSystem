@@ -3,10 +3,12 @@ program OrderSystem;
 uses
   Vcl.Forms,
   uMain in 'uMain.pas' {FMain},
+  uDataModule in 'uDataModule.pas' {DM: TDataModule},
   Utils in 'Utils.pas',
   uCadPai in 'uCadPai.pas' {FCadPai},
-  uDataModule in 'uDataModule.pas' {DM: TDataModule},
-  UtilMensagens in 'UtilMensagens.pas';
+  uCadProduto in 'uCadProduto.pas' {FCadProduto},
+  UtilMensagens in 'UtilMensagens.pas',
+  uPedido in 'uPedido.pas' {FPedido};
 
 {$R *.res}
 

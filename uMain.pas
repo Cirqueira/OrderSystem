@@ -23,6 +23,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure mnuProdutoClick(Sender: TObject);
+    procedure mnuPedidoClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -34,7 +35,7 @@ var
 
 implementation
 
-uses uCadProduto;
+uses uCadProduto, uPedido;
 
 {$R *.dfm}
 
@@ -43,6 +44,11 @@ begin
   FMain.Caption := CentralizaFormCaption(FMain.Caption, 385);
 
   lblddmmaaaa.Caption := DataExtenso(Date);
+end;
+
+procedure TFMain.mnuPedidoClick(Sender: TObject);
+begin
+  TFPedido.Execute;
 end;
 
 procedure TFMain.mnuProdutoClick(Sender: TObject);
