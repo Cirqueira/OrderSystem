@@ -4,13 +4,13 @@ uses
   Vcl.Forms,
   uMain in 'uMain.pas' {FMain},
   Utils in 'Utils.pas',
-  uCadPai in 'uCadPai.pas' {FCadPai},
-  uCadProduto in 'uCadProduto.pas' {FCadProduto},
   UtilMensagens in 'UtilMensagens.pas' {$R *.res},
-  uPedido in 'uPedido.pas' {FPedido},
+  uOrder in 'uOrder.pas' {FOrder},
   uDataModule in 'uDataModule.pas' {DM: TDataModule},
-  uRelatorio in 'uRelatorio.pas' {FRelatorio},
-  uPedidoSP in 'uPedidoSP.pas' {FPedidoSP};
+  uReport in 'uReport.pas' {FReport},
+  uOrderSP in 'uOrderSP.pas' {FOrderSP},
+  uRegister in 'uRegister.pas' {FRegister},
+  uProduct in 'uProduct.pas' {FProduct};
 
 {$R *.res}
 

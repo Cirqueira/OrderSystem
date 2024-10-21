@@ -12,22 +12,22 @@ type
     pnlFundo: TPanel;
     pnlBemvindo: TPanel;
     Panel1: TPanel;
-    lblHora: TLabel;
-    lblddmmaaaa: TLabel;
+    lblHour: TLabel;
     MainMenu1: TMainMenu;
-    mnuProduto: TMenuItem;
-    mnuPedido: TMenuItem;
+    mnuProduct: TMenuItem;
+    mnuOrder: TMenuItem;
     ImageList1: TImageList;
     Timer1: TTimer;
-    mnuRelatorio: TMenuItem;
-    Pedido: TMenuItem;
-    PedidoSP: TMenuItem;
+    mnuReport: TMenuItem;
+    mnuOrder1: TMenuItem;
+    mnuOrderSP: TMenuItem;
+    lblddmmaaaa: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
-    procedure mnuProdutoClick(Sender: TObject);
-    procedure mnuRelatorioClick(Sender: TObject);
-    procedure PedidoClick(Sender: TObject);
-    procedure PedidoSPClick(Sender: TObject);
+    procedure mnuProductClick(Sender: TObject);
+    procedure mnuReportClick(Sender: TObject);
+    procedure mnuOrder1Click(Sender: TObject);
+    procedure mnuOrderSPClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -39,7 +39,9 @@ var
 
 implementation
 
-uses uCadProduto, uPedido, uRelatorio, uPedidoSP;
+uses uOrder, uOrderSP, uProduct, uReport;
+
+
 
 {$R *.dfm}
 
@@ -47,32 +49,32 @@ procedure TFMain.FormCreate(Sender: TObject);
 begin
   FMain.Caption := CentralizaFormCaption(FMain.Caption, 385);
 
-  lblddmmaaaa.Caption := DataExtenso(Date);
+  lblddmmaaaa.Caption := DateUS(Date);
 end;
 
-procedure TFMain.mnuProdutoClick(Sender: TObject);
+procedure TFMain.mnuProductClick(Sender: TObject);
 begin
-  TFCadProduto.Execute;
+  TFProduct.Execute;
 end;
 
-procedure TFMain.mnuRelatorioClick(Sender: TObject);
+procedure TFMain.mnuReportClick(Sender: TObject);
 begin
-  TFRelatorio.Execute;
+  TFReport.Execute;
 end;
 
-procedure TFMain.PedidoClick(Sender: TObject);
+procedure TFMain.mnuOrder1Click(Sender: TObject);
 begin
-  TFPedido.Execute;
+  TFOrder.Execute;
 end;
 
-procedure TFMain.PedidoSPClick(Sender: TObject);
+procedure TFMain.mnuOrderSPClick(Sender: TObject);
 begin
-  TFPedidoSP.Execute;
+  TFOrderSP.Execute;
 end;
 
 procedure TFMain.Timer1Timer(Sender: TObject);
 begin
-  lblHora.Caption := FormatDateTime('hh:nn', Time);
+  lblHour.Caption := FormatDateTime('hh:nn', Time);
 end;
 
 end.

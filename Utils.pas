@@ -40,6 +40,7 @@ type
   function ValidaCNPJ(CNPJ : String) : Boolean;
   function ValidaCPF(CPF : String): Boolean;
   function DataExtenso(Data:TDateTime): String;
+  function DateUS(Data:TDateTime): String;
   function CentralizaFormCaption(sTexto: string; iTamanho: Integer): string;
 
 const
@@ -770,6 +771,41 @@ begin
   iDia := DayOfWeek(Data);
 
   Result := sDiaSemana [iDia] + ', ' + inttostr (Dia) + ' de ' + sMes [Mes]+ ' de ' + inttostr (Ano);
+end;
+
+function DateUS(Data:TDateTime): String;
+var
+  iDay : Integer;
+  sWeekDay : array [1..7] of String;
+  sMonth : array [1..12] of String;
+  Day, Month, Year : Word;
+begin
+  sWeekDay [1]:= 'Sunday';
+  sWeekDay [2]:= 'Monday';
+  sWeekDay [3]:= 'Tuesday';
+  sWeekDay [4]:= 'Wednesday';
+  sWeekDay [5]:= 'Thursday';
+  sWeekDay [6]:= 'Friday';
+  sWeekDay [7]:= 'Saturday';
+
+  sMonth [1]:=  'January';
+  sMonth [2]:=  'February';
+  sMonth [3]:=  'March';
+  sMonth [4]:=  'April';
+  sMonth [5]:=  'May';
+  sMonth [6]:=  'June';
+  sMonth [7]:=  'July';
+  sMonth [8]:=  'August';
+  sMonth [9]:=  'September';
+  sMonth [10]:= 'October';
+  sMonth [11]:= 'November';
+  sMonth [12]:= ' December';
+
+  DecodeDate (Data, Year, Month, Day);
+
+  iDay := DayOfWeek(Data);
+
+  Result := inttostr (Day) + 'th ' + sMonth [Month]+ ', ' + inttostr (Year);
 end;
 
 function CentralizaFormCaption(sTexto: string; iTamanho: Integer): string;

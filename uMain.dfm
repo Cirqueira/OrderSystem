@@ -45,11 +45,11 @@ object FMain: TFMain
         Align = alRight
         BevelOuter = bvNone
         TabOrder = 0
-        object lblHora: TLabel
+        object lblHour: TLabel
           Left = 83
-          Top = 23
+          Top = 21
           Width = 258
-          Height = 28
+          Height = 25
           Alignment = taRightJustify
           AutoSize = False
           Caption = '23:59'
@@ -67,7 +67,7 @@ object FMain: TFMain
           Height = 16
           Alignment = taRightJustify
           AutoSize = False
-          Caption = 'Segunda-Feira, 28 de Fevereiro de 9999'
+          Caption = '1th, January 2000'
           Font.Charset = ANSI_CHARSET
           Font.Color = clMenuHighlight
           Font.Height = -13
@@ -82,24 +82,25 @@ object FMain: TFMain
     Images = ImageList1
     Left = 40
     Top = 160
-    object mnuProduto: TMenuItem
-      Caption = 'Produto'
-      OnClick = mnuProdutoClick
+    object mnuProduct: TMenuItem
+      Caption = 'Product'
+      OnClick = mnuProductClick
     end
-    object mnuPedido: TMenuItem
-      Caption = 'Pedido'
-      object Pedido: TMenuItem
-        Caption = 'Pedido'
-        OnClick = PedidoClick
+    object mnuOrder: TMenuItem
+      Caption = 'Order'
+      object mnuOrder1: TMenuItem
+        Caption = 'Order'
+        Visible = False
+        OnClick = mnuOrder1Click
       end
-      object PedidoSP: TMenuItem
-        Caption = 'Pedido (Stored Procedure)'
-        OnClick = PedidoSPClick
+      object mnuOrderSP: TMenuItem
+        Caption = 'Order (Stored Procedure)'
+        OnClick = mnuOrderSPClick
       end
     end
-    object mnuRelatorio: TMenuItem
-      Caption = 'Relat'#243'rio'
-      OnClick = mnuRelatorioClick
+    object mnuReport: TMenuItem
+      Caption = 'Report'
+      OnClick = mnuReportClick
     end
   end
   object ImageList1: TImageList

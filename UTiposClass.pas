@@ -3,7 +3,7 @@ unit UTiposClass;
 interface
 
 type
-  TStatus = (stInserindo, stEditando, stSalvando, stCancelando, stApagando, stNavegando);
+  TStatus = (stInsert, stEdit, stSave, stUndo, stErase, stBrowse);
   
 implementation
 

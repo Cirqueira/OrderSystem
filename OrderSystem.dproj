@@ -129,30 +129,31 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Utils.pas"/>
-        <DCCReference Include="uCadPai.pas">
-            <Form>FCadPai</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uCadProduto.pas">
-            <Form>FCadProduto</Form>
-        </DCCReference>
         <DCCReference Include="UtilMensagens.pas">
             <Form>$R *.res</Form>
         </DCCReference>
-        <DCCReference Include="uPedido.pas">
-            <Form>FPedido</Form>
+        <DCCReference Include="uOrder.pas">
+            <Form>FOrder</Form>
         </DCCReference>
         <DCCReference Include="uDataModule.pas">
             <Form>DM</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="uRelatorio.pas">
-            <Form>FRelatorio</Form>
+        <DCCReference Include="uReport.pas">
+            <Form>FReport</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="uPedidoSP.pas">
-            <Form>FPedidoSP</Form>
+        <DCCReference Include="uOrderSP.pas">
+            <Form>FOrderSP</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uRegister.pas">
+            <Form>FRegister</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uProduct.pas">
+            <Form>FProduct</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Base">

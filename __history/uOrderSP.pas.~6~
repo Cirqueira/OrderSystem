@@ -1,0 +1,198 @@
+unit uOrderSP;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPedido, Data.DB, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
+  Vcl.StdCtrls, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.ExtCtrls,
+  Vcl.Buttons, Vcl.Mask, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.ComCtrls,
+  uOrder;
+
+type
+  TFOrderSP = class(TFOrder)
+    cbOrder: TComboBox;
+    lblSelectOrderCode: TLabel;
+    btnSearch: TBitBtn;
+    procedure btnSearchClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+    function  GetRecordQuantity: Integer;
+    procedure SetRecordQuantity;
+    procedure LoadOrderID;
+    procedure GetOrders(orderID: Integer);
+    procedure GetItemOrder(orderID: Integer);
+  public
+    { Public declarations }
+    class procedure Execute;
+  end;
+
+var
+  FOrderSP: TFOrderSP;
+
+implementation
+
+{$R *.dfm}
+
+uses uDataModule;
+
+procedure TFOrderSP.btnSearchClick(Sender: TObject);
+var
+  orderID: Integer;
+begin
+  if cbOrder.ItemIndex = -1 then
+  begin
+    ShowMessage('Please, select an order.');
+    Exit;
+  end;
+
+  orderID := StrToInt(cbOrder.Items[cbOrder.ItemIndex]);
+
+  GetOrders(orderID);
+end;
+
+procedure TFOrderSP.LoadOrderID;
+begin
+  cbOrder.Clear;
+
+  DM.qSearch.Close;
+  DM.qSearch.SQL.Text := 'SELECT cod_order FROM tab_orders';
+  DM.qSearch.Open();
+
+  while not DM.qSearch.Eof do
+  begin
+    cbOrder.Items.Add(DM.qSearch.FieldByName('cod_order').AsString);
+    DM.qSearch.Next;
+  end;
+
+   DM.qSearch.Close;
+end;
+
+class procedure TFOrderSP.Execute;
+var
+  oForm: TFOrderSP;
+begin
+  try
+    try
+      oForm := TFOrderSP.Create(nil);
+      oForm.ShowModal;
+
+    except
+      on e: exception do
+        raise exception('There was a failure in the form.' + sLineBreak +
+                        'Original message: ' + e.Message);
+    end;
+  finally
+    if (Assigned(oForm)) then
+      FreeAndNil(oForm);
+  end;
+end;
+
+procedure TFOrderSP.FormCreate(Sender: TObject);
+begin
+  LoadOrderID;
+end;
+
+function TFOrderSP.GetQtdeRegistros: Integer;
+begin
+  if Assigned(DM.dsPedidoSP.DataSet) then
+    Result := DM.dsPedidoSP.DataSet.RecordCount
+  else
+    Result := 0;
+end;
+
+procedure TFOrderSP.ObterPedidos(codPedido: Integer);
+begin
+  DM.qPedidoSP.Close;
+  DM.qPedidoSP.SQL.Clear;
+  DM.qPedidoSP.SQL.Add('EXEC sp_Order :cod_order');
+  DM.qPedidoSP.ParamByName('cod_order').AsInteger := codPedido;
+
+  try
+    DM.qPedidoSP.Open;
+
+    if DM.qPedidoSP.RecordCount > 0 then
+    begin
+      DM.dsPedidoSP.DataSet := DM.qPedidoSP;
+      dbgrdPrincipal.DataSource := DM.dsPedidoSP;
+      dbgrdPrincipal.Refresh;
+
+      ObterPedidoItens(codPedido);
+      SetQtdeRegistros;
+    end
+    else
+    begin
+      ShowMessage('Nenhum pedido encontrado para o código: ' + IntToStr(codPedido));
+    end;
+  except
+    on E: Exception do
+      ShowMessage('Erro ao executar a stored procedure: ' + E.Message);
+    end;
+end;
+
+procedure TFOrderSP.SetQtdeRegistros;
+begin
+  StatusBar.Panels[0].Text := 'Pedidos encontrados: ' + IntToStr(GetQtdeRegistros);
+end;
+
+procedure TFOrderSP.ObterPedidoItens(codPedido: Integer);
+begin
+  DM.qItemSP.Close;
+  DM.qItemSP.SQL.Clear;
+  DM.qItemSP.SQL.Add('EXEC sp_OrderDetails :cod_order');
+  DM.qItemSP.ParamByName('cod_order').AsInteger := codPedido;
+
+  try
+    DM.qItemSP.Open;
+
+    if DM.qItemSP.RecordCount > 0 then
+    begin
+      DM.dsItemSP.DataSet := DM.qItemSP;
+      dbgrdItens.DataSource := DM.dsItemSP;
+      dbgrdItens.Refresh;
+    end
+  except
+    on E: Exception do
+      ShowMessage('Erro ao executar a stored procedure: ' + E.Message);
+    end;
+end;
+
+// Removido pelo uso incorreto na linha: DM.qPedidoSP.NextRecordSet;
+{procedure TFPedidoSP.ObterPedidos(codPedido: Integer);
+begin
+  DM.qPedidoSP.Close;
+  DM.qItemSP.Close;
+
+  DM.qPedidoSP.SQL.Clear;
+  DM.qPedidoSP.SQL.Add('EXEC sp_OrderDetails :cod_order');
+  DM.qPedidoSP.ParamByName('cod_order').AsInteger := codPedido;
+
+  try
+    DM.qPedidoSP.Open;
+
+    if DM.qPedidoSP.RecordCount > 0 then
+    begin
+      DM.dsPedidoSP.DataSet := DM.qPedidoSP;
+      dbgrdPrincipal.Refresh;
+
+      if DM.qPedidoSP.NextRecordSet then
+      begin
+        DM.dsItemSP.DataSet := DM.qPedidoSP;
+        dbgrdItens.Refresh;
+      end;
+
+    end
+    else
+    begin
+      ShowMessage('Nenhum pedido encontrado para o código: ' + IntToStr(codPedido));
+    end;
+  except
+    on E: Exception do
+      ShowMessage('Erro ao executar a stored procedure: ' + E.Message);
+  end;
+end;}
+
+end.
