@@ -12,15 +12,40 @@ uses
 
 type
   TDM = class(TDataModule)
-    FDConnection1: TFDConnection;
-    FDQueryProdutos: TFDQuery;
-    DataSource1: TDataSource;
+    fdConnection: TFDConnection;
+    qProdutos: TFDQuery;
+    dsProdutos: TDataSource;
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
-    FDQueryProdutoscod_product: TIntegerField;
-    FDQueryProdutosname: TStringField;
-    FDQueryProdutosdescription: TStringField;
-    FDQueryProdutosprice: TBCDField;
-    FDQueryConsultas: TFDQuery;
+    qProdutoscod_product: TIntegerField;
+    qProdutosname: TStringField;
+    qProdutosdescription: TStringField;
+    qProdutosprice: TBCDField;
+    qConsultas: TFDQuery;
+    dsConsultas: TDataSource;
+    fdqPedido: TFDQuery;
+    fdqPedidocod_order: TIntegerField;
+    fdqPedidodate_order: TDateField;
+    fdqPedidocod_client: TIntegerField;
+    fdqPedidoname_client: TStringField;
+    dsPedido: TDataSource;
+    fdqItem: TFDQuery;
+    fdqItemproduct: TStringField;
+    fdqItemquantity: TIntegerField;
+    fdqItemunit_price: TBCDField;
+    fdqItemtotal_value_item: TFMTBCDField;
+    fdqItemtotal_value_order: TFMTBCDField;
+    dsItemPedido: TDataSource;
+    qPedidoSP: TFDQuery;
+    qItemSP: TFDQuery;
+    dsPedidoSP: TDataSource;
+    dsItemSP: TDataSource;
+    qItemSPcod_item_order: TIntegerField;
+    qItemSPcod_product: TIntegerField;
+    qItemSPname_product: TStringField;
+    qItemSPdescription: TStringField;
+    qItemSPquantity: TIntegerField;
+    qItemSPunit_price: TBCDField;
+    qItemSPtotal_item: TFMTBCDField;
   private
     { Private declarations }
   public

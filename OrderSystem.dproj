@@ -151,6 +151,10 @@
             <Form>FRelatorio</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="uPedidoSP.pas">
+            <Form>FPedidoSP</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

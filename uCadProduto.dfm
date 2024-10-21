@@ -1,9 +1,7 @@
 inherited FCadProduto: TFCadProduto
-  BorderStyle = bsSingle
   Caption = 'Cadastro de produtos'
   KeyPreview = True
   StyleElements = [seFont, seClient, seBorder]
-  ExplicitLeft = -121
   TextHeight = 15
   inherited pnlGrid: TPanel
     Width = 593
@@ -17,25 +15,21 @@ inherited FCadProduto: TFCadProduto
         item
           Expanded = False
           FieldName = 'cod_product'
-          Width = 65
           Visible = True
         end
         item
           Expanded = False
           FieldName = 'name'
-          Width = 80
           Visible = True
         end
         item
           Expanded = False
           FieldName = 'description'
-          Width = 300
           Visible = True
         end
         item
           Expanded = False
           FieldName = 'price'
-          Width = 80
           Visible = True
         end>
     end
@@ -125,7 +119,7 @@ inherited FCadProduto: TFCadProduto
       Margins.Bottom = 4
       Color = clScrollBar
       DataField = 'cod_product'
-      DataSource = dsPrincipal
+      DataSource = DM.dsProdutos
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
@@ -148,7 +142,7 @@ inherited FCadProduto: TFCadProduto
       Margins.Bottom = 4
       CharCase = ecUpperCase
       DataField = 'name'
-      DataSource = dsPrincipal
+      DataSource = DM.dsProdutos
       ParentShowHint = False
       ShowHint = True
       TabOrder = 1
@@ -166,7 +160,7 @@ inherited FCadProduto: TFCadProduto
       Margins.Bottom = 4
       CharCase = ecUpperCase
       DataField = 'description'
-      DataSource = dsPrincipal
+      DataSource = DM.dsProdutos
       ParentShowHint = False
       ShowHint = True
       TabOrder = 2
@@ -184,7 +178,7 @@ inherited FCadProduto: TFCadProduto
       Margins.Bottom = 4
       CharCase = ecUpperCase
       DataField = 'price'
-      DataSource = dsPrincipal
+      DataSource = DM.dsProdutos
       ParentShowHint = False
       ShowHint = True
       TabOrder = 3
@@ -228,11 +222,11 @@ inherited FCadProduto: TFCadProduto
     inherited lblNomeForm: TLabel
       Caption = 'Produtos'
       StyleElements = [seFont, seClient, seBorder]
-      ExplicitWidth = 706
+      ExplicitWidth = 104
     end
   end
   inherited dsPrincipal: TDataSource
-    DataSet = DM.FDQueryProdutos
+    DataSet = DM.qProdutos
     Left = 144
     Top = 328
   end

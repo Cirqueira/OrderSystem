@@ -2,6 +2,7 @@ object FMain: TFMain
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
   Caption = 'Order System'
   ClientHeight = 541
   ClientWidth = 1007
@@ -87,7 +88,14 @@ object FMain: TFMain
     end
     object mnuPedido: TMenuItem
       Caption = 'Pedido'
-      OnClick = mnuPedidoClick
+      object Pedido: TMenuItem
+        Caption = 'Pedido'
+        OnClick = PedidoClick
+      end
+      object PedidoSP: TMenuItem
+        Caption = 'Pedido (Stored Procedure)'
+        OnClick = PedidoSPClick
+      end
     end
     object mnuRelatorio: TMenuItem
       Caption = 'Relat'#243'rio'

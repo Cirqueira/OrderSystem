@@ -106,7 +106,7 @@ end;
 
 procedure TFRelatorio.CarregarClientes;
 begin
-  cbCliente.Clear;  // Limpa a lista antes de carregar novos itens
+  cbCliente.Clear;
 
   fdqCliente.Close;
   fdqCliente.SQL.Text := 'SELECT name FROM tab_clients';
@@ -117,6 +117,8 @@ begin
     cbCliente.Items.Add(fdqCliente.FieldByName('name').AsString);
     fdqCliente.Next;
   end;
+
+  fdqCliente.Close;
 end;
 
 procedure TFRelatorio.CarregarRelatorio;
@@ -124,7 +126,6 @@ var
   nomeCliente: string;
   dataInicial, dataFinal: TDate;
 begin
-  // Verificar se foi selecionado um cliente
   if cbCliente.ItemIndex >= 0 then
     nomeCliente := cbCliente.Text
   else
@@ -133,22 +134,21 @@ begin
     Exit;
   end;
 
-  // Obter datas do TDateTimePicker
   dataInicial := dtpDataInicial.Date;
   dataFinal := dtpDataFinal.Date;
 
-  // Passar os parâmetros para a FDQuery
-  fdqRelatorio.Close;  // Fechar a consulta anterior
+  fdqRelatorio.Close;
   fdqRelatorio.ParamByName('NameClient').AsString := nomeCliente;
   fdqRelatorio.ParamByName('DataInicio').AsDate := dataInicial;
   fdqRelatorio.ParamByName('DataFim').AsDate := dataFinal;
 
   try
-    fdqRelatorio.Open;  // Executar a consulta
+    fdqRelatorio.Open;
 
-    // Configurar e mostrar o relatório FastReport
-    frxReport.DataSet := frxDB;  // Vincular a consulta ao relatório
-    frxReport.ShowReport;        // Exibir o relatório
+    if fdqRelatorio.RecordCount > 0 then
+      frxReport.ShowReport
+    else
+      ShowMessage('Nenhum pedido encontrado!');
   except
     on E: Exception do
       raise Exception.Create('Erro ao carregar o relatório: ' + E.Message);

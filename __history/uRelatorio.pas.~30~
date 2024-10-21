@@ -1,0 +1,224 @@
+unit uRelatorio;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, frxSmartMemo, frCoreClasses, frxClass,
+  frxDBSet, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ComCtrls, Vcl.Buttons,
+  Vcl.DBCtrls;
+
+type
+  TFRelatorio = class(TForm)
+    frxReport: TfrxReport;
+    frxDB: TfrxDBDataset;
+    fdqRelatorio: TFDQuery;
+    pnlFundo: TPanel;
+    dtpDataInicial: TDateTimePicker;
+    dtpDataFinal: TDateTimePicker;
+    lblCliente: TLabel;
+    pnlBotoes: TPanel;
+    btnFechar: TSpeedButton;
+    bevelSair: TBevel;
+    lblNomeForm: TLabel;
+    lblDataInicial: TLabel;
+    lblDataFinal: TLabel;
+    btnPesquisar: TButton;
+    fdqCliente: TFDQuery;
+    DataSource: TDataSource;
+    cbCliente: TComboBox;
+    fdqRelatoriodata: TDateField;
+    fdqRelatoriocod_order: TIntegerField;
+    fdqRelatorioclient: TStringField;
+    fdqRelatorioproduct: TStringField;
+    fdqRelatorioquantity: TIntegerField;
+    fdqRelatoriounit_price: TBCDField;
+    fdqRelatoriototal_value_item: TFMTBCDField;
+    fdqRelatoriototal_value_order: TFMTBCDField;
+    procedure FormCreate(Sender: TObject);
+    procedure btnFecharClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnPesquisarClick(Sender: TObject);
+  private
+    { Private declarations }
+    function ValidarPeriodo: Boolean;
+    procedure CarregarRelatorio;
+    procedure CarregarClientes;
+  public
+    { Public declarations }
+    class procedure Execute;
+  end;
+
+var
+  FRelatorio: TFRelatorio;
+
+implementation
+
+{$R *.dfm}
+
+uses uDataModule, UtilMensagens;
+
+procedure TFRelatorio.btnFecharClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFRelatorio.btnPesquisarClick(Sender: TObject);
+begin
+  if ValidarPeriodo then
+  begin
+    try
+      CarregarRelatorio;
+
+    except
+      on E: Exception do
+      begin
+        raise Exception.Create('Houve uma falha ao carregar o relatório.' + sLineBreak +
+                               'Mensagem original: ' + E.Message);
+      end;
+    end;
+  end;
+end;
+
+class procedure TFRelatorio.Execute;
+var
+  oForm: TFRelatorio;
+begin
+  try
+    try
+      oForm := TFRelatorio.Create(nil);
+
+      oForm.ShowModal;
+
+    except
+      on e: exception do
+        raise exception('Houve uma falha no formulário.' + sLineBreak +
+                        'Mensagem original: ' + e.Message);
+    end;
+  finally
+    if (Assigned(oForm)) then
+      FreeAndNil(oForm);
+  end;
+end;
+
+procedure TFRelatorio.CarregarClientes;
+begin
+  cbCliente.Clear;  // Limpa a lista antes de carregar novos itens
+
+  fdqCliente.Close;
+  fdqCliente.SQL.Text := 'SELECT name FROM tab_clients';
+  fdqCliente.Open();
+
+  while not fdqCliente.Eof do
+  begin
+    cbCliente.Items.Add(fdqCliente.FieldByName('name').AsString);
+    fdqCliente.Next;
+  end;
+
+  fdqCliente..Close;
+end;
+
+procedure TFRelatorio.CarregarRelatorio;
+var
+  nomeCliente: string;
+  dataInicial, dataFinal: TDate;
+begin
+  // Verificar se foi selecionado um cliente
+  if cbCliente.ItemIndex >= 0 then
+    nomeCliente := cbCliente.Text
+  else
+  begin
+    msgAlerta('Por favor, selecione um cliente.');
+    Exit;
+  end;
+
+  // Obter datas do TDateTimePicker
+  dataInicial := dtpDataInicial.Date;
+  dataFinal := dtpDataFinal.Date;
+
+  // Passar os parâmetros para a FDQuery
+  fdqRelatorio.Close;  // Fechar a consulta anterior
+  fdqRelatorio.ParamByName('NameClient').AsString := nomeCliente;
+  fdqRelatorio.ParamByName('DataInicio').AsDate := dataInicial;
+  fdqRelatorio.ParamByName('DataFim').AsDate := dataFinal;
+
+  try
+    fdqRelatorio.Open;  // Executar a consulta
+
+    // Configurar e mostrar o relatório FastReport
+    frxReport.DataSet := frxDB;  // Vincular a consulta ao relatório
+    frxReport.ShowReport;        // Exibir o relatório
+  except
+    on E: Exception do
+      raise Exception.Create('Erro ao carregar o relatório: ' + E.Message);
+  end;
+end;
+
+function TFRelatorio.ValidarPeriodo: Boolean;
+var
+  slErros: TStringList;
+begin
+  slErros := TStringList.Create;
+
+  if (dtpDataInicial.Date = 0) then
+    slErros.Add('  - A data inicial precisa ser preenchida.');
+
+  if (dtpDataFinal.Date = 0) then
+    slErros.Add('  - A data final precisa ser preenchida.');
+
+  if (dtpDataInicial.Date <> 0) and (dtpDataFinal.Date <> 0) then
+  begin
+    if (dtpDataInicial.Date > dtpDataFinal.Date ) then
+      slErros.Add('  - A data final não pode ser menor que a data inicial.')
+  end;
+
+
+  if (slErros.Count > 0) then
+  begin
+    msgAlerta('Por favor, verifique o (s) seguinte (s) alerta (s):' + sLineBreak +
+              slErros.Text);
+
+    Result := False;
+  end
+  else
+    Result := True;
+
+  FreeAndNil(slErros);
+end;
+
+procedure TFRelatorio.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if MessageDlg('Deseja realmente fechar esta tela ?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+      Abort;
+end;
+
+procedure TFRelatorio.FormCreate(Sender: TObject);
+begin
+  CarregarClientes;
+
+  fdqRelatorio.SQL.Clear;
+  fdqRelatorio.SQL.Text :=
+  'SELECT o.date_order AS data, ' +
+  '       o.cod_order, ' +
+  '       c.name AS client, ' +
+  '       i.name AS product, ' +
+  '       oi.quantity, ' +
+  '       oi.unit_price, ' +
+  '       (oi.quantity * oi.unit_price) AS total_value_item, ' +
+  '       (SELECT SUM(oi2.quantity * oi2.unit_price) ' +
+  '        FROM tab_orders_item oi2 ' +
+  '        WHERE oi2.cod_order = o.cod_order) AS total_value_order ' +
+  'FROM tab_orders o ' +
+  'JOIN tab_orders_item oi ON (o.cod_order = oi.cod_order) ' +
+  'JOIN tab_clients c ON (o.cod_client = c.cod_client) ' +
+  'JOIN tab_item i ON (oi.cod_product = i.cod_product) ' +
+  'WHERE c.name = :NameClient ' +
+  '  AND o.date_order BETWEEN :DataInicio AND :DataFim ' +
+  'GROUP BY o.date_order, o.cod_order, c.name, i.name, ' +
+  '         oi.quantity, oi.unit_price';
+end;
+
+end.

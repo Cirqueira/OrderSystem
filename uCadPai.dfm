@@ -2,6 +2,7 @@ object FCadPai: TFCadPai
   Left = 0
   Top = 0
   BorderIcons = []
+  BorderStyle = bsSingle
   Caption = 'FCadPai'
   ClientHeight = 545
   ClientWidth = 982
@@ -64,7 +65,6 @@ object FCadPai: TFCadPai
     Height = 483
     Align = alClient
     TabOrder = 2
-    ExplicitTop = 45
   end
   object pnlBotoes: TPanel
     Left = 0

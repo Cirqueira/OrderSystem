@@ -1,0 +1,290 @@
+inherited FPedido: TFPedido
+  Caption = 'Lista de pedidos'
+  StyleElements = [seFont, seClient, seBorder]
+  OnShow = FormShow
+  TextHeight = 15
+  inherited StatusBar: TStatusBar
+    Panels = <
+      item
+        Text = 'Pedidos encontrados: 0'
+        Width = 50
+      end>
+  end
+  inherited pnlGrid: TPanel
+    Width = 661
+    StyleElements = [seFont, seClient, seBorder]
+    ExplicitWidth = 661
+    object lblItemPedido: TLabel [0]
+      AlignWithMargins = True
+      Left = 6
+      Top = 204
+      Width = 136
+      Height = 21
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Itens do pedido'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clMenuHighlight
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object lblPedido: TLabel [1]
+      AlignWithMargins = True
+      Left = 7
+      Top = 19
+      Width = 68
+      Height = 21
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Pedidos'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clMenuHighlight
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    inherited dbgrdPrincipal: TDBGrid
+      Left = 13
+      Top = 47
+      Width = 642
+      Height = 121
+      DataSource = DM.dsPedido
+      Enabled = False
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'cod_order'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'date_order'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'cod_client'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'name_client'
+          Visible = True
+        end>
+    end
+    object dbgrdItens: TDBGrid
+      Left = 11
+      Top = 233
+      Width = 643
+      Height = 225
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      DataSource = DM.dsItemPedido
+      Enabled = False
+      FixedColor = clMenuHighlight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Options = [dgTitles, dgColumnResize, dgColLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgCancelOnExit]
+      ParentFont = False
+      TabOrder = 1
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Style = []
+    end
+  end
+  inherited pnlDados: TPanel
+    Left = 661
+    Width = 321
+    StyleElements = [seFont, seClient, seBorder]
+    ExplicitLeft = 661
+    ExplicitWidth = 321
+    object lblCodigoPedido: TLabel
+      Left = 44
+      Top = 59
+      Width = 46
+      Height = 13
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Pedido ID'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lblData: TLabel
+      Left = 44
+      Top = 156
+      Width = 23
+      Height = 13
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Data'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lblCliente: TLabel
+      Left = 44
+      Top = 266
+      Width = 33
+      Height = 13
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Cliente'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lblValorTotal: TLabel
+      Left = 44
+      Top = 370
+      Width = 98
+      Height = 13
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Total do Pedido (R$)'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object edtCodigoPedido: TDBEdit
+      Left = 44
+      Top = 80
+      Width = 70
+      Height = 23
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Color = clScrollBar
+      DataField = 'cod_order'
+      DataSource = DM.dsPedido
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 0
+    end
+    object edtData: TDBEdit
+      Left = 44
+      Top = 177
+      Width = 85
+      Height = 23
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      CharCase = ecUpperCase
+      Color = clScrollBar
+      DataField = 'date_order'
+      DataSource = DM.dsPedido
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 1
+    end
+    object edtCliente: TDBEdit
+      Left = 44
+      Top = 287
+      Width = 221
+      Height = 23
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      CharCase = ecUpperCase
+      Color = clScrollBar
+      DataField = 'name_client'
+      DataSource = DM.dsPedido
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 2
+    end
+    object edtValorTotal: TDBEdit
+      Left = 44
+      Top = 391
+      Width = 85
+      Height = 23
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      CharCase = ecUpperCase
+      Color = clScrollBar
+      DataField = 'total_value_order'
+      DataSource = DM.dsItemPedido
+      ParentShowHint = False
+      ReadOnly = True
+      ShowHint = True
+      TabOrder = 3
+    end
+  end
+  inherited pnlBotoes: TPanel
+    StyleElements = [seFont, seClient, seBorder]
+    inherited btnRegNovo: TSpeedButton
+      Visible = False
+    end
+    inherited btnRegEditar: TSpeedButton
+      Visible = False
+    end
+    inherited btnRegSalvar: TSpeedButton
+      Visible = False
+    end
+    inherited btnRegDesfazer: TSpeedButton
+      Visible = False
+    end
+    inherited btnRegApagar: TSpeedButton
+      Visible = False
+    end
+    inherited bevelNavegar: TBevel
+      Visible = False
+    end
+    inherited lblNomeForm: TLabel
+      Width = 706
+      Height = 35
+      Caption = 'Lista de Pedidos'
+      StyleElements = [seFont, seClient, seBorder]
+      ExplicitWidth = 706
+    end
+  end
+  inherited dsPrincipal: TDataSource
+    Left = 328
+    Top = 16
+  end
+end

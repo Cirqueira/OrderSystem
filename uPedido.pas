@@ -16,18 +16,6 @@ type
     dbgrdItens: TDBGrid;
     lblItemPedido: TLabel;
     lblPedido: TLabel;
-    dsPedido: TDataSource;
-    dsItemPedido: TDataSource;
-    fdqPedido: TFDQuery;
-    fdqItem: TFDQuery;
-    fdqPedidocod_order: TIntegerField;
-    fdqPedidodate_order: TDateField;
-    fdqPedidocod_client: TIntegerField;
-    fdqPedidoname_client: TStringField;
-    fdqItemproduct: TStringField;
-    fdqItemquantity: TIntegerField;
-    fdqItemunit_price: TBCDField;
-    fdqItemtotal_value_item: TFMTBCDField;
     lblCodigoPedido: TLabel;
     edtCodigoPedido: TDBEdit;
     lblData: TLabel;
@@ -36,12 +24,12 @@ type
     edtCliente: TDBEdit;
     lblValorTotal: TLabel;
     edtValorTotal: TDBEdit;
-    fdqItemtotal_value_order: TFMTBCDField;
     procedure dsPedidoDataChange(Sender: TObject; Field: TField);
     procedure btnRegAnteriorClick(Sender: TObject);
     procedure btnRegProximoClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     function  GetQtdeRegistros: Integer;
@@ -70,14 +58,14 @@ end;
 function TFPedido.GetQtdeRegistros: Integer;
 begin
   if (GetDataSetInstanciado) then
-    Result := dsPedido.DataSet.RecordCount
+    Result := DM.dsPedido.DataSet.RecordCount
   else
     Result := 0;
 end;
 
 function TFPedido.GetDataSetInstanciado: Boolean;
 begin
-  Result := Assigned(dsPedido.DataSet);
+  Result := Assigned(DM.dsPedido.DataSet);
 end;
 
 procedure TFPedido.btnFecharClick(Sender: TObject);
@@ -87,8 +75,8 @@ end;
 
 procedure TFPedido.btnRegAnteriorClick(Sender: TObject);
 begin
-  dsPedido.DataSet.Prior;
-  btnRegAnterior.Enabled := (dsPedido.DataSet.RecNo > 1);
+  DM.dsPedido.DataSet.Prior;
+  btnRegAnterior.Enabled := (DM.dsPedido.DataSet.RecNo > 1);
   btnRegProximo.Enabled  := True;
 
   CarregarItensPedido;
@@ -97,8 +85,8 @@ end;
 
 procedure TFPedido.btnRegProximoClick(Sender: TObject);
 begin
-  dsPedido.DataSet.Next;
-  btnRegProximo.Enabled  := (dsPedido.DataSet.RecNo < dsPedido.DataSet.RecordCount);
+  DM.dsPedido.DataSet.Next;
+  btnRegProximo.Enabled  := (DM.dsPedido.DataSet.RecNo < DM.dsPedido.DataSet.RecordCount);
   btnRegAnterior.Enabled := True;
 
   CarregarItensPedido;
@@ -109,25 +97,13 @@ procedure TFPedido.CarregarItensPedido;
 var
   total: Double;
 begin
-  if not fdqPedido.FieldByName('cod_order').IsNull then
+  if not DM.fdqPedido.FieldByName('cod_order').IsNull then
   begin
-    fdqItem.Close;
-    fdqItem.ParamByName('OrderID').AsInteger := fdqPedido.FieldByName('cod_order').AsInteger;
-    fdqItem.Open;
+    DM.fdqItem.Close;
+    DM.fdqItem.ParamByName('OrderID').AsInteger := DM.fdqPedido.FieldByName('cod_order').AsInteger;
+    DM.fdqItem.Open;
 
     total := 0;
-//    if not fdqItem.IsEmpty then
-//    begin
-//      fdqItem.First;
-//      while not fdqItem.Eof do
-//      begin
-//        Total := Total + fdqItem.FieldByName('total_value_item').AsFloat;
-//        fdqItem.Next;
-//      end;
-//    end;
-//
-//    edtValorTotal.DataField := 'total_value_order';
-//    edtValorTotal.Text := FormatFloat('0.00', Total);
   end;
 end;
 
@@ -143,6 +119,10 @@ begin
   try
     try
       oForm := TFPedido.Create(nil);
+
+      if not DM.dsPedido.DataSet.Active then
+        DM.dsPedido.DataSet.Open;
+
       oForm.ShowModal;
 
     except
@@ -160,6 +140,16 @@ procedure TFPedido.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if MessageDlg('Deseja realmente fechar esta tela ?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then
     Abort;
+end;
+
+procedure TFPedido.FormShow(Sender: TObject);
+begin
+  if DM.dsPedido.DataSet.Active and (DM.dsPedido.DataSet.RecordCount > 0) then
+  begin
+    DM.dsPedido.DataSet.First;
+    CarregarItensPedido;
+    SetQtdeRegistros;
+  end;
 end;
 
 end.

@@ -22,7 +22,7 @@ VALUES
 
 -- Cadastrando pedido 01 para o cliente 1 (Antonio Alves).
 INSERT INTO tab_orders (cod_order, cod_client, date_order, total_value) 
-VALUES (1, 1, '2024-10-13', 44.00);
+VALUES (1, 1, '2024-10-13', 68.00);
 
 -- Inserindo itens ao pedido 01.
 INSERT INTO tab_orders_item (cod_item_order, cod_order, cod_product, quantity, unit_price) 

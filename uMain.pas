@@ -20,11 +20,14 @@ type
     ImageList1: TImageList;
     Timer1: TTimer;
     mnuRelatorio: TMenuItem;
+    Pedido: TMenuItem;
+    PedidoSP: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure mnuProdutoClick(Sender: TObject);
-    procedure mnuPedidoClick(Sender: TObject);
     procedure mnuRelatorioClick(Sender: TObject);
+    procedure PedidoClick(Sender: TObject);
+    procedure PedidoSPClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -36,7 +39,7 @@ var
 
 implementation
 
-uses uCadProduto, uPedido, uRelatorio;
+uses uCadProduto, uPedido, uRelatorio, uPedidoSP;
 
 {$R *.dfm}
 
@@ -47,11 +50,6 @@ begin
   lblddmmaaaa.Caption := DataExtenso(Date);
 end;
 
-procedure TFMain.mnuPedidoClick(Sender: TObject);
-begin
-  TFPedido.Execute;
-end;
-
 procedure TFMain.mnuProdutoClick(Sender: TObject);
 begin
   TFCadProduto.Execute;
@@ -60,6 +58,16 @@ end;
 procedure TFMain.mnuRelatorioClick(Sender: TObject);
 begin
   TFRelatorio.Execute;
+end;
+
+procedure TFMain.PedidoClick(Sender: TObject);
+begin
+  TFPedido.Execute;
+end;
+
+procedure TFMain.PedidoSPClick(Sender: TObject);
+begin
+  TFPedidoSP.Execute;
 end;
 
 procedure TFMain.Timer1Timer(Sender: TObject);
